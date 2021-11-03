@@ -46,7 +46,7 @@ class MainActivity : ComponentActivity(), TimePickerDialog.OnTimeSetListener {
         hour = calendar.get(Calendar.HOUR)
     }
 
-    private fun pickTime() {
+    fun pickTime() {
         getDataTimeCalendar()
         TimePickerDialog(this, this, hour, minute, true).show()
     }
@@ -57,63 +57,42 @@ class MainActivity : ComponentActivity(), TimePickerDialog.OnTimeSetListener {
 
     }
 
-    @Composable
-    fun Greeting(name: String) {
+
+
+    private fun materialTimePicker() {
         var calendar = Calendar.getInstance()
-        var minuteFinal by remember { mutableStateOf(Calendar.MINUTE) }
-        var hourFinal by remember { mutableStateOf(Calendar.HOUR) }
+        val materialTimePicker = MaterialTimePicker.Builder()
+            .setTimeFormat(TimeFormat.CLOCK_24H)
+            .setHour(12)
+            .setMinute(0)
+            .setTitleText("Выберите время будильника")
+            .build()
 
+        materialTimePicker.addOnPositiveButtonClickListener {
+            calendar = Calendar.getInstance()
+            calendar.set(Calendar.MILLISECOND, 0)
+            calendar.set(Calendar.SECOND, 0)
+            calendar.set(Calendar.MINUTE, materialTimePicker.minute)
+            calendar.set(Calendar.HOUR, materialTimePicker.hour)
 
-        Column() {
-            Button(onClick = {
-                //pickTime()
-                val materialTimePicker = MaterialTimePicker.Builder()
-                    .setTimeFormat(TimeFormat.CLOCK_24H)
-                    .setHour(12)
-                    .setMinute(0)
-                    .setTitleText("Выберите время будильника")
-                    .build()
+            val alarmManager: AlarmManager =
+                getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            val alarmClockInfo = AlarmManager.AlarmClockInfo(
+                calendar.timeInMillis,
+                getAlarmInfoPendingIntent()
+            )
 
-                materialTimePicker.addOnPositiveButtonClickListener {
-                    calendar = Calendar.getInstance()
-                    calendar.set(Calendar.MILLISECOND, 0)
-                    calendar.set(Calendar.SECOND, 0)
-                    calendar.set(Calendar.MINUTE, materialTimePicker.minute)
-                    calendar.set(Calendar.HOUR, materialTimePicker.hour)
+            //Toast.makeText(this, "Будильник установлен", Toast.LENGTH_LONG).show()
 
-                    val alarmManager: AlarmManager =
-                        getSystemService(Context.ALARM_SERVICE) as AlarmManager
-                    val alarmClockInfo = AlarmManager.AlarmClockInfo(
-                        calendar.timeInMillis,
-                        getAlarmInfoPendingIntent()
-                    )
+            alarmManager.setAlarmClock(alarmClockInfo, getAlarmActionPendingIntent())
+        }
 
-                    //Toast.makeText(this, "Будильник установлен", Toast.LENGTH_LONG).show()
+        val supportFragmentManager =
 
-                    alarmManager.setAlarmClock(alarmClockInfo, getAlarmActionPendingIntent())
-                }
-
-                val supportFragmentManager =
-
-                    materialTimePicker.show
+            materialTimePicker.show(child)
 //                materialTimePicker.show(
 //                    (this@MainActivity as FragmentActivity).supportFragmentManager, "tag_picker"
 //                )
-            }) {
-                Text(text = "Press me")
-            }
-
-            Button(onClick = {
-                minuteFinal = minute
-                hourFinal = hour
-            }) {
-                Text(text = "Show")
-            }
-            Text(text = "$hourFinal:$minuteFinal")
-
-        }
-
-
     }
 
     private fun getAlarmInfoPendingIntent(): PendingIntent {
@@ -132,6 +111,8 @@ class MainActivity : ComponentActivity(), TimePickerDialog.OnTimeSetListener {
 
         return PendingIntent.getActivity(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT)
     }
+
+
 }
 
 //

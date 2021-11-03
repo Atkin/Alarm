@@ -6,8 +6,6 @@ import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 
-class AlarmPlaying() {
-
     @Composable
     fun AlarmPlaying() {
         var notificationRingtone = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
@@ -28,4 +26,3 @@ class AlarmPlaying() {
             Text(text = "Stop")
         }
     }
-}
