@@ -1,6 +1,7 @@
 package ru.projectatkin.alarm
 
 sealed class Screens(val route: String) {
+    object homeScreen: Screens("home_screen")
     object AlarmPlaying: Screens("alarm_playing")
     object ChoiseMusicTheme: Screens("choise_music_theme")
     object ForestSounds: Screens("forest_sounds")

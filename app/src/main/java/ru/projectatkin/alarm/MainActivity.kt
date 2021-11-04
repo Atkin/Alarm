@@ -23,9 +23,8 @@ import com.google.android.material.timepicker.TimeFormat
 import ru.projectatkin.alarm.ui.theme.AlarmTheme
 import java.util.*
 
-class MainActivity : ComponentActivity(), TimePickerDialog.OnTimeSetListener {
-    var minute = 0
-    var hour = 0
+class MainActivity : ComponentActivity() {
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,28 +33,12 @@ class MainActivity : ComponentActivity(), TimePickerDialog.OnTimeSetListener {
             AlarmTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
-                    Greeting("Android")
+                    navigation(this)
                 }
             }
         }
     }
 
-    private fun getDataTimeCalendar() {
-        var calendar = Calendar.getInstance()
-        minute = calendar.get(Calendar.MINUTE)
-        hour = calendar.get(Calendar.HOUR)
-    }
-
-    fun pickTime() {
-        getDataTimeCalendar()
-        TimePickerDialog(this, this, hour, minute, true).show()
-    }
-
-    override fun onTimeSet(p0: TimePicker?, hourSet: Int, minuteSet: Int) {
-        this.minute = minuteSet
-        this.hour = hourSet
-
-    }
 
 
 
@@ -84,12 +67,12 @@ class MainActivity : ComponentActivity(), TimePickerDialog.OnTimeSetListener {
 
             //Toast.makeText(this, "Будильник установлен", Toast.LENGTH_LONG).show()
 
-            alarmManager.setAlarmClock(alarmClockInfo, getAlarmActionPendingIntent())
+           // alarmManager.setAlarmClock(alarmClockInfo, getAlarmActionPendingIntent())
         }
 
-        val supportFragmentManager =
+       // val supportFragmentManager =
 
-            materialTimePicker.show(child)
+           // materialTimePicker.show(child)
 //                materialTimePicker.show(
 //                    (this@MainActivity as FragmentActivity).supportFragmentManager, "tag_picker"
 //                )
@@ -106,11 +89,11 @@ class MainActivity : ComponentActivity(), TimePickerDialog.OnTimeSetListener {
         )
     }
 
-    private fun getAlarmActionPendingIntent(): PendingIntent {
-        intent = Intent(this, AlarmPlaying()::class.java)
-
-        return PendingIntent.getActivity(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-    }
+//    private fun getAlarmActionPendingIntent(): PendingIntent {
+//        intent = Intent(this, AlarmPlaying()::class.java)
+//
+//        return PendingIntent.getActivity(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+//    }
 
 
 }
